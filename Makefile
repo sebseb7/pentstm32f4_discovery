@@ -50,8 +50,12 @@ SIZE = arm-none-eabi-size
 
 #########################################################################
 
-all: $(PROJECT).bin Makefile stats
+all: STM32F4xx_StdPeriph_Driver/build/STM32F4xx_StdPeriph_Driver.a $(PROJECT).bin Makefile stats
+
+STM32F4xx_StdPeriph_Driver/build/STM32F4xx_StdPeriph_Driver.a:
 	make -C STM32F4xx_StdPeriph_Driver/build
+
+tools/flash/st-flash:
 	make -C tools
 
 $(PROJECT).bin: $(PROJECT).elf Makefile
@@ -80,7 +84,7 @@ clean:
 
 #########################################################################
 
-flash: all
+flash: tools/flash/st-flash all
 
 	tools/flash/st-flash write $(PROJECT).bin 0x08000000
 #	lpc21isp $(PROJECT).hex  $(USB_DEVICE) 230400 14746

@@ -1,4 +1,6 @@
 *.a
 *.o
-*.hex
+*.bin
 *.elf
+tools/flash/st-flash
+
