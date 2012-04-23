@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    CortexM/BitBand/stm32f4xx_conf.h  
+  * @file    Project/STM32F4xx_StdPeriph_Templates/stm32f4xx_conf.h  
   * @author  MCD Application Team
   * @version V1.0.1
   * @date    13-April-2012
