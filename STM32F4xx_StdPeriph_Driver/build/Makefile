@@ -6,7 +6,7 @@ RANLIB = arm-none-eabi-ranlib
 
 CFLAGS = -Wall -O2 -mlittle-endian -mthumb
 CFLAGS += -mcpu=cortex-m4 -ffreestanding -nostdlib
-CFLAGS += -I../inc -I../inc/device_support -I../inc/core_support
+CFLAGS += -I../inc -I../inc/device_support -I../inc/core_support -I../../core
 
 SRCS = \
 ../src/misc.c \

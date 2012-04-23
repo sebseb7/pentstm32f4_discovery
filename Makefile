@@ -23,7 +23,7 @@ OBJECTS= $(SRC:.c=.o) $(ASRC:.s=.o)
 HEADERS=$(wildcard core/*.h *.h)
 
 #  Compiler Options
-GCFLAGS=-g -O2 -mlittle-endian -mthumb -Icore
+GCFLAGS=-g -O2 -mlittle-endian -mthumb -Icore -I.
 GCFLAGS+=-mcpu=cortex-m4	
 GCFLAGS+=-ffreestanding -nostdlib
 
