@@ -2,21 +2,27 @@
   ******************************************************************************
   * @file    stm32f4xx_pwr.h
   * @author  MCD Application Team
-  * @version V1.0.0RC1
-  * @date    25-August-2011
+  * @version V1.0.2
+  * @date    05-March-2012
   * @brief   This file contains all the functions prototypes for the PWR firmware 
   *          library.
   ******************************************************************************
   * @attention
   *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
   *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  * You may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at:
+  *
+  *        http://www.st.com/software_license_agreement_liberty_v2
+  *
+  * Unless required by applicable law or agreed to in writing, software 
+  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  *
   ******************************************************************************
   */ 
 
@@ -87,6 +93,14 @@
 #define PWR_STOPEntry_WFI               ((uint8_t)0x01)
 #define PWR_STOPEntry_WFE               ((uint8_t)0x02)
 #define IS_PWR_STOP_ENTRY(ENTRY) (((ENTRY) == PWR_STOPEntry_WFI) || ((ENTRY) == PWR_STOPEntry_WFE))
+
+/** @defgroup PWR_Regulator_Voltage_Scale 
+  * @{
+  */
+
+#define PWR_Regulator_Voltage_Scale1    ((uint32_t)0x00004000)
+#define PWR_Regulator_Voltage_Scale2    ((uint32_t)0x00000000)
+#define IS_PWR_REGULATOR_VOLTAGE(VOLTAGE) (((VOLTAGE) == PWR_Regulator_Voltage_Scale1) || ((VOLTAGE) == PWR_Regulator_Voltage_Scale2))
  
 /**
   * @}
@@ -100,11 +114,19 @@
 #define PWR_FLAG_SB                     PWR_CSR_SBF
 #define PWR_FLAG_PVDO                   PWR_CSR_PVDO
 #define PWR_FLAG_BRR                    PWR_CSR_BRR
-#define PWR_FLAG_REGRDY                 PWR_CSR_REGRDY
+#define PWR_FLAG_VOSRDY                 PWR_CSR_VOSRDY
+
+/** @defgroup PWR_Flag_Legacy 
+  * @{
+  */
+#define PWR_FLAG_REGRDY                  PWR_FLAG_VOSRDY               
+/**
+  * @}
+  */
 
 #define IS_PWR_GET_FLAG(FLAG) (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB) || \
                                ((FLAG) == PWR_FLAG_PVDO) || ((FLAG) == PWR_FLAG_BRR) || \
-                               ((FLAG) == PWR_FLAG_REGRDY))
+                               ((FLAG) == PWR_FLAG_VOSRDY))
 
 #define IS_PWR_CLEAR_FLAG(FLAG) (((FLAG) == PWR_FLAG_WU) || ((FLAG) == PWR_FLAG_SB))
 /**
@@ -131,11 +153,11 @@ void PWR_PVDCmd(FunctionalState NewState);
 /* WakeUp pins configuration functions ****************************************/ 
 void PWR_WakeUpPinCmd(FunctionalState NewState);
 
-/* Backup Regulator configuration functions ***********************************/ 
+/* Main and Backup Regulators configuration functions *************************/ 
 void PWR_BackupRegulatorCmd(FunctionalState NewState);
+void PWR_MainRegulatorModeConfig(uint32_t PWR_Regulator_Voltage);
 
-/* Performance Mode and FLASH Power Down configuration functions **************/ 
-void PWR_HighPerformanceModeCmd(FunctionalState NewState);
+/* FLASH Power Down configuration functions ***********************************/ 
 void PWR_FlashPowerDownCmd(FunctionalState NewState);
 
 /* Low Power modes configuration functions ************************************/ 
@@ -160,4 +182,4 @@ void PWR_ClearFlag(uint32_t PWR_FLAG);
   * @}
   */
 
-/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

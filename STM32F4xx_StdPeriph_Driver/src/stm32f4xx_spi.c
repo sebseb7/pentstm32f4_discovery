@@ -2,10 +2,10 @@
   ******************************************************************************
   * @file    stm32f4xx_spi.c
   * @author  MCD Application Team
-  * @version V1.0.0RC1
-  * @date    25-August-2011
+  * @version V1.0.2
+  * @date    05-March-2012
   * @brief   This file provides firmware functions to manage the following 
-  *          functionalities of the Serial peripheral interface (SPI):           
+  *          functionalities of the Serial peripheral interface (SPI):
   *           - Initialization and Configuration
   *           - Data transfers functions
   *           - Hardware CRC Calculation
@@ -17,7 +17,7 @@
   *                    
   *          ===================================================================
   *                                 How to use this driver
-  *          ===================================================================        
+  *          ===================================================================
   *    
   *          1. Enable peripheral clock using the following functions 
   *             RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE) for SPI1
@@ -124,10 +124,6 @@
   *          rxdata[i] = SPI_I2S_ReceiveData(I2S3ext);
   *          ...          
   *              
-  *       
-  *    
-  * @note    This driver supports only the I2S clock scheme available in Silicon
-  *          RevisionB and RevisionY.
   *     
   * @note    In I2S mode: if an external clock is used as source clock for the I2S,  
   *          then the define I2S_EXTERNAL_CLOCK_VAL in file stm32f4xx_conf.h should 
@@ -141,15 +137,21 @@
   ******************************************************************************
   * @attention
   *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
   *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************  
+  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  * You may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at:
+  *
+  *        http://www.st.com/software_license_agreement_liberty_v2
+  *
+  * Unless required by applicable law or agreed to in writing, software 
+  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  *
+  ******************************************************************************
   */ 
 
 /* Includes ------------------------------------------------------------------*/
@@ -368,7 +370,7 @@ void I2S_Init(SPI_TypeDef* SPIx, I2S_InitTypeDef* I2S_InitStruct)
       packetlength = 2;
     }
 
-    /* Get I2S source Clock frequency (only in Silicon RevisionB and RevisionY) */
+    /* Get I2S source Clock frequency  ****************************************/
       
     /* If an external I2S clock has to be used, this define should be set  
        in the project configuration or in the stm32f4xx_conf.h file */
@@ -1287,4 +1289,4 @@ void SPI_I2S_ClearITPendingBit(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT)
   * @}
   */ 
 
-/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
