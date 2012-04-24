@@ -1,4 +1,5 @@
 #include "main.h"
+#include "arm_math.h" 
 
 static __IO uint32_t TimingDelay;
 static __IO uint32_t tick;
@@ -79,6 +80,10 @@ int main(void)
 	USART_Init(USART1, &USART_InitStructure);
 	USART_Cmd(USART1, ENABLE);
 
+	float a = 0.1;
+	float32_t testOutput;  /* Final ouput */ 
+	float32_t testInput = 1.3f;  /* Final ouput */ 
+
 	while (1)
 	{
 		USART_puts("test\n");
@@ -94,7 +99,13 @@ int main(void)
 		USART_puts(string);
 	
 
+		a+=0.1f;
 
+		//dsplib test
+		arm_add_f32(&testOutput, &testInput, &testOutput, 1);	 
+		
+		sprintf(string,"test: %u \n",(uint32_t)testOutput);
+		USART_puts(string);
 
 		/* PD12 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_12);
