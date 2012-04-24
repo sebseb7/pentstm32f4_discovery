@@ -12,7 +12,7 @@ endif
 
 LSCRIPT=core/stm32_flash.ld
 
-OPTIMIZATION = 2
+OPTIMIZATION = -O2
 DEBUG = -g
 
 #########################################################################
@@ -20,26 +20,25 @@ DEBUG = -g
 SRC=$(wildcard core/*.c *.c) 
 ASRC=$(wildcard core/*.s)
 OBJECTS= $(SRC:.c=.o) $(ASRC:.s=.o)
+LSTFILES= $(SRC:.c=.lst)
 HEADERS=$(wildcard core/*.h *.h)
 
 #  Compiler Options
-GCFLAGS=-g -O2 -mlittle-endian -mthumb -Icore -I.
-GCFLAGS+=-mcpu=cortex-m4	
-GCFLAGS+=-ffreestanding -nostdlib
-
-# to run from FLASH
-#GCFLAGS+=-Wl,-T,stm32_flash.ld
+GCFLAGS=-g $(OPTIMIZATION) -mthumb -Icore -I. -Iusb
+GCFLAGS+=-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -Wl,--gc-sections -fsingle-precision-constant	
+GCFLAGS+=-Wa,-adhlns=$(<:.c=.lst)
+GCFLAGS+=-ffreestanding -nostdlib -Wa,-adhlns=$(<:.c=.lst)
 
 # stm32f4_discovery lib
 GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc
 GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc/device_support
-GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc/core_support
+GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc/core_support 
 
-#GCFLAGS = -std=gnu99 -Wall -fno-common -mcpu=cortex-m3 -mthumb -O$(OPTIMIZATION) $(DEBUG) -Ilpc_drivers -I. -Idrivers -Icore 
+#1803               <Define>ARM_MATH_CM4, ARM_MATH_MATRIX_CHECK, ARM_MATH_ROUNDING, __FPU_PRESENT = 1</Define>
 # -ffunction-sections -fdata-sections -fmessage-length=0   -fno-builtin
-#GCFLAGS += -D__RAM_MODE__=0  -D__BUILD_WITH_EXAMPLE__ 
-LDFLAGS = -mcpu=cortex-m4 -mthumb -O$(OPTIMIZATION) -nostartfiles  -T$(LSCRIPT) -LSTM32F4xx_StdPeriph_Driver/build -lSTM32F4xx_StdPeriph_Driver
-ASFLAGS = -mcpu=cortex-m4 
+
+
+LDFLAGS = -mcpu=cortex-m4 -mthumb $(OPTIMIZATION) -nostartfiles  -T$(LSCRIPT) -LSTM32F4xx_StdPeriph_Driver/build -lSTM32F4xx_StdPeriph_Driver
 
 #  Compiler/Assembler Paths
 GCC = arm-none-eabi-gcc
@@ -69,6 +68,7 @@ stats: $(PROJECT).elf Makefile
 
 clean:
 	$(REMOVE) $(OBJECTS)
+	$(REMOVE) $(LSTFILES)
 	$(REMOVE) $(PROJECT).bin
 	$(REMOVE) $(PROJECT).elf
 	make -C STM32F4xx_StdPeriph_Driver/build clean
@@ -86,7 +86,7 @@ clean:
 
 flash: tools/flash/st-flash all
 
-	tools/flash/st-flash write $(PROJECT).bin 0x08000000
+	tools/flash/st-flash write $(PROJECT).bin 0x08000000 
 #	lpc21isp $(PROJECT).hex  $(USB_DEVICE) 230400 14746
 #	lpc21isp -verify $(PROJECT).hex  $(USB_DEVICE) 19200 14746
 
