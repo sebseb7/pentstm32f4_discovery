@@ -24,10 +24,11 @@ LSTFILES= $(SRC:.c=.lst)
 HEADERS=$(wildcard core/*.h *.h)
 
 #  Compiler Options
-GCFLAGS=-g $(OPTIMIZATION) -mthumb -Icore -I. -Iusb
-GCFLAGS+=-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -Wl,--gc-sections -fsingle-precision-constant	
-GCFLAGS+=-Wa,-adhlns=$(<:.c=.lst)
-GCFLAGS+=-ffreestanding -nostdlib -Wa,-adhlns=$(<:.c=.lst)
+GCFLAGS=  -g $(OPTIMIZATION) -mthumb -Icore -I. -Iusb
+GCFLAGS+= -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototypes
+GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -Wl,--gc-sections -fsingle-precision-constant	
+GCFLAGS+= -Wa,-adhlns=$(<:.c=.lst)
+GCFLAGS+= -ffreestanding -nostdlib -Wa,-adhlns=$(<:.c=.lst)
 
 # stm32f4_discovery lib
 GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc

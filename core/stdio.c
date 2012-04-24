@@ -65,8 +65,8 @@
 //------------------------------------------------------------------------------
 signed int append_char(char *pStr, char c)
 {
-    *pStr = c;
-    return 1;
+	*pStr = c;
+	return 1;
 }
 
 //------------------------------------------------------------------------------
@@ -78,23 +78,23 @@ signed int append_char(char *pStr, char c)
 //------------------------------------------------------------------------------
 signed int PutString(char *pStr, char fill, signed int width, const char *pSource)
 {
-    signed int num = 0;
+	signed int num = 0;
 
-    while (*pSource != 0) {
+	while (*pSource != 0) {
 
-        *pStr++ = *pSource++;
-        num++;
-    }
+		*pStr++ = *pSource++;
+		num++;
+	}
 
 	width -= num;
 	while (width > 0) {
 
-        *pStr++ = fill;
+		*pStr++ = fill;
 		num++;
 		width--;
 	}
 
-    return num;
+	return num;
 }
 
 //------------------------------------------------------------------------------
@@ -107,38 +107,38 @@ signed int PutString(char *pStr, char fill, signed int width, const char *pSourc
 // \param value  Integer value.
 //------------------------------------------------------------------------------
 signed int PutUnsignedInt(
-    char *pStr,
-    char fill,
-    signed int width,
-    unsigned int value)
+	char *pStr,
+	char fill,
+	signed int width,
+	unsigned int value)
 {
-    signed int num = 0;
+	signed int num = 0;
 
-    // Take current digit into account when calculating width
-    width--;
+	// Take current digit into account when calculating width
+	width--;
 
-    // Recursively write upper digits
-    if ((value / 10) > 0) {
+	// Recursively write upper digits
+	if ((value / 10) > 0) {
 
-        num = PutUnsignedInt(pStr, fill, width, value / 10);
-        pStr += num;
-    }
-    // Write filler characters
-    else {
+		num = PutUnsignedInt(pStr, fill, width, value / 10);
+		pStr += num;
+	}
+	// Write filler characters
+	else {
 
-        while (width > 0) {
+		while (width > 0) {
 
-            append_char(pStr, fill);
-            pStr++;
-            num++;
-            width--;
-        }
-    }
+			append_char(pStr, fill);
+			pStr++;
+			num++;
+			width--;
+		}
+	}
 
-    // Write lower digit
-    num += append_char(pStr, (value % 10) + '0');
+	// Write lower digit
+	num += append_char(pStr, (value % 10) + '0');
 
-    return num;
+	return num;
 }
 
 //------------------------------------------------------------------------------
@@ -151,69 +151,69 @@ signed int PutUnsignedInt(
 // \param value  Signed integer value.
 //------------------------------------------------------------------------------
 signed int PutSignedInt(
-    char *pStr,
-    char fill,
-    signed int width,
-    signed int value)
+	char *pStr,
+	char fill,
+	signed int width,
+	signed int value)
 {
-    signed int num = 0;
-    unsigned int absolute;
+	signed int num = 0;
+	unsigned int absolute;
 
-    // Compute absolute value
-    if (value < 0) {
+	// Compute absolute value
+	if (value < 0) {
 
-        absolute = -value;
-    }
-    else {
+		absolute = -value;
+	}
+	else {
 
-        absolute = value;
-    }
+		absolute = value;
+	}
 
-    // Take current digit into account when calculating width
-    width--;
+	// Take current digit into account when calculating width
+	width--;
 
-    // Recursively write upper digits
-    if ((absolute / 10) > 0) {
+	// Recursively write upper digits
+	if ((absolute / 10) > 0) {
 
-        if (value < 0) {
-        
-            num = PutSignedInt(pStr, fill, width, -(absolute / 10));
-        }
-        else {
+		if (value < 0) {
+		
+			num = PutSignedInt(pStr, fill, width, -(absolute / 10));
+		}
+		else {
 
-            num = PutSignedInt(pStr, fill, width, absolute / 10);
-        }
-        pStr += num;
-    }
-    else {
+			num = PutSignedInt(pStr, fill, width, absolute / 10);
+		}
+		pStr += num;
+	}
+	else {
 
-        // Reserve space for sign
-        if (value < 0) {
+		// Reserve space for sign
+		if (value < 0) {
 
-            width--;
-        }
+			width--;
+		}
 
-        // Write filler characters
-        while (width > 0) {
+		// Write filler characters
+		while (width > 0) {
 
-            append_char(pStr, fill);
-            pStr++;
-            num++;
-            width--;
-        }
+			append_char(pStr, fill);
+			pStr++;
+			num++;
+			width--;
+		}
 
-        // Write sign
-        if (value < 0) {
+		// Write sign
+		if (value < 0) {
 
-            num += append_char(pStr, '-');
-            pStr++;
-        }
-    }
+			num += append_char(pStr, '-');
+			pStr++;
+		}
+	}
 
-    // Write lower digit
-    num += append_char(pStr, (absolute % 10) + '0');
+	// Write lower digit
+	num += append_char(pStr, (absolute % 10) + '0');
 
-    return num;
+	return num;
 }
 
 //------------------------------------------------------------------------------
@@ -227,51 +227,51 @@ signed int PutSignedInt(
 // \param value  Hexadecimal value.
 //------------------------------------------------------------------------------
 signed int PutHexa(
-    char *pStr,
-    char fill,
-    signed int width,
-    unsigned char maj,
-    unsigned int value)
+	char *pStr,
+	char fill,
+	signed int width,
+	unsigned char maj,
+	unsigned int value)
 {
-    signed int num = 0;
+	signed int num = 0;
 
-    // Decrement width
-    width--;
+	// Decrement width
+	width--;
 
-    // Recursively output upper digits
-    if ((value >> 4) > 0) {
+	// Recursively output upper digits
+	if ((value >> 4) > 0) {
 
-        num += PutHexa(pStr, fill, width, maj, value >> 4);
-        pStr += num;
-    }
-    // Write filler chars
-    else {
+		num += PutHexa(pStr, fill, width, maj, value >> 4);
+		pStr += num;
+	}
+	// Write filler chars
+	else {
 
-        while (width > 0) {
+		while (width > 0) {
 
-            append_char(pStr, fill);
-            pStr++;
-            num++;
-            width--;
-        }
-    }
+			append_char(pStr, fill);
+			pStr++;
+			num++;
+			width--;
+		}
+	}
 
-    // Write current digit
-    if ((value & 0xF) < 10) {
+	// Write current digit
+	if ((value & 0xF) < 10) {
 
-        append_char(pStr, (value & 0xF) + '0');
-    }
-    else if (maj) {
+		append_char(pStr, (value & 0xF) + '0');
+	}
+	else if (maj) {
 
-        append_char(pStr, (value & 0xF) - 10 + 'A');
-    }
-    else {
+		append_char(pStr, (value & 0xF) - 10 + 'A');
+	}
+	else {
 
-        append_char(pStr, (value & 0xF) - 10 + 'a');
-    }
-    num++;
+		append_char(pStr, (value & 0xF) - 10 + 'a');
+	}
+	num++;
 
-    return num;
+	return num;
 }
 
 //------------------------------------------------------------------------------
@@ -289,96 +289,96 @@ signed int PutHexa(
 //------------------------------------------------------------------------------
 signed int vsnprintf(char *pStr, size_t length, const char *pFormat, va_list ap)
 {
-    char          fill;
-    unsigned char width;
-    signed int    num = 0;
-    signed int    size = 0;
+	char          fill;
+	unsigned char width;
+	unsigned int    num = 0;
+	unsigned int    size = 0;
 
-    // Clear the string
-    if (pStr) {
+	// Clear the string
+	if (pStr) {
 
-        *pStr = 0;
-    }
+		*pStr = 0;
+	}
 
-    // Phase string
-    while (*pFormat != 0 && size < length) {
+	// Phase string
+	while (*pFormat != 0 && size < length) {
 
-        // Normal character
-        if (*pFormat != '%') {
+		// Normal character
+		if (*pFormat != '%') {
 
-            *pStr++ = *pFormat++;
-            size++;
-        }
-        // Escaped '%'
-        else if (*(pFormat+1) == '%') {
+			*pStr++ = *pFormat++;
+			size++;
+		}
+		// Escaped '%'
+		else if (*(pFormat+1) == '%') {
 
-            *pStr++ = '%';
-            pFormat += 2;
-            size++;
-        }
-        // Token delimiter
-        else {
+			*pStr++ = '%';
+			pFormat += 2;
+			size++;
+		}
+		// Token delimiter
+		else {
 
-            fill = ' ';
-            width = 0;
-            pFormat++;
+			fill = ' ';
+			width = 0;
+			pFormat++;
 
-            // Parse filler
-            if (*pFormat == '0') {
+			// Parse filler
+			if (*pFormat == '0') {
 
-                fill = '0';
-                pFormat++;
-            }
+				fill = '0';
+				pFormat++;
+			}
 
-            // Ignore justifier
-            if (*pFormat == '-') {
-                pFormat++;
-            }
+			// Ignore justifier
+			if (*pFormat == '-') {
+				pFormat++;
+			}
 
-            // Parse width
-            while ((*pFormat >= '0') && (*pFormat <= '9')) {
-        
-                width = (width*10) + *pFormat-'0';
-                pFormat++;
-            }
+			// Parse width
+			while ((*pFormat >= '0') && (*pFormat <= '9')) {
+		
+				width = (width*10) + *pFormat-'0';
+				pFormat++;
+			}
 
-            // Check if there is enough space
-            if (size + width > length) {
+			// Check if there is enough space
+			if (size + width > length) {
 
-                width = length - size;
-            }
-        
-            // Parse type
-            switch (*pFormat) {
-            case 'd': 
-            case 'i': num = PutSignedInt(pStr, fill, width, va_arg(ap, signed int)); break;
-            case 'u': num = PutUnsignedInt(pStr, fill, width, va_arg(ap, unsigned int)); break;
-            case 'x': num = PutHexa(pStr, fill, width, 0, va_arg(ap, unsigned int)); break;
-            case 'X': num = PutHexa(pStr, fill, width, 1, va_arg(ap, unsigned int)); break;
-            case 's': num = PutString(pStr, fill, width, va_arg(ap, char *)); break;
-            case 'c': num = append_char(pStr, va_arg(ap, unsigned int)); break;
-            default:
-                return EOF;
-            }
+				width = length - size;
+			}
+		
+			// Parse type
+			switch (*pFormat) {
+			case 'd': 
+			case 'i': num = PutSignedInt(pStr, fill, width, va_arg(ap, signed int)); break;
+			case 'u': num = PutUnsignedInt(pStr, fill, width, va_arg(ap, unsigned int)); break;
+			case 'x': num = PutHexa(pStr, fill, width, 0, va_arg(ap, unsigned int)); break;
+			case 'X': num = PutHexa(pStr, fill, width, 1, va_arg(ap, unsigned int)); break;
+			case 's': num = PutString(pStr, fill, width, va_arg(ap, char *)); break;
+			case 'c': num = append_char(pStr, va_arg(ap, unsigned int)); break;
+			default:
+				return EOF;
+			}
 
-            pFormat++;
-            pStr += num;
-            size += num;
-        }
-    }
+			pFormat++;
+			pStr += num;
+			size += num;
+		}
+	}
 
-    // NULL-terminated (final \0 is not counted)
-    if (size < length) {
+	// NULL-terminated (final \0 is not counted)
+	if (size < length) {
 
-        *pStr = 0;
-    }
-    else {
+		*pStr = 0;
+	}
+	else {
 
-        *(--pStr) = 0;
-        size--;
-    }
+		*(--pStr) = 0;
+		size--;
+	}
 
-    return size;
+	return size;
 }
 
 //------------------------------------------------------------------------------
@@ -392,14 +392,14 @@ signed int vsnprintf(char *pStr, size_t length, const char *pFormat, va_list ap)
 //------------------------------------------------------------------------------
 signed int snprintf(char *pString, size_t length, const char *pFormat, ...)
 {
-    va_list    ap;
-    signed int rc;
+	va_list    ap;
+	signed int rc;
 
-    va_start(ap, pFormat);
-    rc = vsnprintf(pString, length, pFormat, ap);
-    va_end(ap);
+	va_start(ap, pFormat);
+	rc = vsnprintf(pString, length, pFormat, ap);
+	va_end(ap);
 
-    return rc;
+	return rc;
 }
 
 //------------------------------------------------------------------------------
@@ -412,7 +412,7 @@ signed int snprintf(char *pString, size_t length, const char *pFormat, ...)
 //------------------------------------------------------------------------------
 signed int vsprintf(char *pString, const char *pFormat, va_list ap)
 {
-    return vsnprintf(pString, MAX_STRING_SIZE, pFormat, ap);
+	return vsnprintf(pString, MAX_STRING_SIZE, pFormat, ap);
 }
 
 //------------------------------------------------------------------------------
@@ -422,13 +422,13 @@ signed int vsprintf(char *pString, const char *pFormat, va_list ap)
 //------------------------------------------------------------------------------
 signed int sprintf(char *pStr, const char *pFormat, ...)
 {
-    va_list ap;
-    signed int result;
+	va_list ap;
+	signed int result;
 
-    // Forward call to vsprintf
-    va_start(ap, pFormat);
-    result = vsprintf(pStr, pFormat, ap);
-    va_end(ap);
+	// Forward call to vsprintf
+	va_start(ap, pFormat);
+	result = vsprintf(pStr, pFormat, ap);
+	va_end(ap);
 
-    return result;
+	return result;
 }
