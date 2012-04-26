@@ -26,9 +26,9 @@ HEADERS=$(wildcard core/*.h *.h)
 #  Compiler Options
 GCFLAGS=  -g $(OPTIMIZATION) -mlittle-endian -mthumb -Icore -I. -Iusb
 GCFLAGS+= -funsigned-char -Wundef -Wsign-compare -Wunreachable-code -Wstrict-prototypes
-GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -Wl,--gc-sections -fsingle-precision-constant -DARM_MATH_CM4 
+GCFLAGS+= -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -Wl,--gc-sections -fsingle-precision-constant -DARM_MATH_CM4 
 GCFLAGS+= -Wa,-adhlns=$(<:.c=.lst)
-GCFLAGS+= -ffreestanding -nostdlib -Wa,-adhlns=$(<:.c=.lst)
+GCFLAGS+= -ffreestanding -nostdlib -Wa,-adhlns=$(<:.c=.lst) -fno-math-errno
 
 # stm32f4_discovery lib
 GCFLAGS+=-ISTM32_DSP_Lib/inc
@@ -42,7 +42,7 @@ GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc/core_support
 
 LDFLAGS = -mcpu=cortex-m4 -mthumb $(OPTIMIZATION) -nostartfiles  -T$(LSCRIPT) 
 LDFLAGS+= -LSTM32F4xx_StdPeriph_Driver/build -lSTM32F4xx_StdPeriph_Driver
-LDFLAGS+= -LSTM32_DSP_Lib/build -lSTM32_DSP_Lib
+LDFLAGS+= -LSTM32_DSP_Lib/build -lSTM32_DSP_Lib  
 
 #  Compiler/Assembler Paths
 GCC = arm-none-eabi-gcc
@@ -54,6 +54,7 @@ SIZE = arm-none-eabi-size
 #########################################################################
 
 all: STM32F4xx_StdPeriph_Driver/build/STM32F4xx_StdPeriph_Driver.a STM32_DSP_Lib/build/STM32_DSP_Lib.a $(PROJECT).bin Makefile stats
+#	arm-none-eabi-objdump -d $(PROJECT).elf > out.dump
 
 STM32F4xx_StdPeriph_Driver/build/STM32F4xx_StdPeriph_Driver.a:
 	make -C STM32F4xx_StdPeriph_Driver/build
@@ -95,6 +96,4 @@ clean:
 flash: tools/flash/st-flash all
 
 	tools/flash/st-flash write $(PROJECT).bin 0x08000000 
-#	lpc21isp $(PROJECT).hex  $(USB_DEVICE) 230400 14746
-#	lpc21isp -verify $(PROJECT).hex  $(USB_DEVICE) 19200 14746
 

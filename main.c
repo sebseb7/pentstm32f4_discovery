@@ -33,6 +33,14 @@ void USART_puts(const char *text)
 	}
 
 }
+__attribute__( ( always_inline ) ) static __INLINE float __VSQRTF(float op1)
+{
+	float result;
+
+	__ASM volatile ("vsqrt.f32 %0, %1" : "=w" (result) : "w" (op1) );
+	return(result);
+}
+
 
 int main(void)
 {
@@ -80,10 +88,6 @@ int main(void)
 	USART_Init(USART1, &USART_InitStructure);
 	USART_Cmd(USART1, ENABLE);
 
-	float a = 0.1;
-	float32_t testOutput;  /* Final ouput */ 
-	float32_t testInput = 1.3f;  /* Final ouput */ 
-
 	while (1)
 	{
 		USART_puts("test\n");
@@ -97,43 +101,35 @@ int main(void)
 
 		sprintf(string,"ticks: %u \n",tick);
 		USART_puts(string);
-	
 
-		a+=0.1f;
-
-		//dsplib test
-		arm_add_f32(&testOutput, &testInput, &testOutput, 1);	 
-		
-		sprintf(string,"test: %u \n",(uint32_t)testOutput);
-		USART_puts(string);
 
 		/* PD12 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_12);
 
 		/* Insert delay */
-		Delay(200);
+	//	Delay(200);
 
 		/* PD13 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_13);
 
 		/* Insert delay */
-		Delay(200);
+	//	Delay(200);
 
 		/* PD14 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_14);
 
 		/* Insert delay */
-		Delay(200);
+	//	Delay(200);
 
 		/* PD15 to be toggled */
 		GPIO_SetBits(GPIOD, GPIO_Pin_15);
 
 		/* Insert delay */
-		Delay(200);
+	//	Delay(200);
 
 		GPIO_ResetBits(GPIOD, GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
 
 		/* Insert delay */
-		Delay(1000);
+	//	Delay(1000);
 	}
 }
