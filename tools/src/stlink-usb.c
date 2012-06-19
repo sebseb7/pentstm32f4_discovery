@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <time.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <libusb.h>
 
@@ -16,6 +16,19 @@
 #define WLOG(format, args...)         ugly_log(UWARN, LOG_TAG, format, ## args)
 #define fatal(format, args...)        ugly_log(UFATAL, LOG_TAG, format, ## args)
 
+/* code from bsd timersub.h 
+http://www.gnu-darwin.org/www001/src/ports/net/libevnet/work/libevnet-0.3.8/libnostd/bsd/sys/time/timersub.h.html
+*/
+#if !defined timersub
+#define	timersub(a, b, r) do {					\
+	(r)->tv_sec	= (a)->tv_sec - (b)->tv_sec;		\
+	(r)->tv_usec	= (a)->tv_usec - (b)->tv_usec;		\
+	if ((r)->tv_usec < 0) {					\
+		--(r)->tv_sec;					\
+		(r)->tv_usec += 1000000;			\
+	}							\
+} while (0)
+#endif
 
 enum SCSI_Generic_Direction {SG_DXFER_TO_DEV=0, SG_DXFER_FROM_DEV=0x80};
 
@@ -45,7 +58,11 @@ struct trans_ctx {
     volatile unsigned long flags;
 };
 
-static void on_trans_done(struct libusb_transfer * trans) {
+#ifndef LIBUSB_CALL
+# define LIBUSB_CALL
+#endif
+
+static void LIBUSB_CALL on_trans_done(struct libusb_transfer * trans) {
     struct trans_ctx * const ctx = trans->user_data;
 
     if (trans->status != LIBUSB_TRANSFER_COMPLETED)
@@ -635,7 +652,7 @@ stlink_t* stlink_open_usb(const int verbose) {
     if (slu->usb_handle == NULL) {
 	slu->usb_handle = libusb_open_device_with_vid_pid(slu->libusb_ctx, USB_ST_VID, USB_STLINK_PID);
 	if (slu->usb_handle == NULL) {
-	    WLOG("Couldn't find any ST-Link/V2 devices");
+	    WLOG("Couldn't find any ST-Link/V2 devices\n");
 	    goto on_error;
 	}
 	slu->protocoll = 1;
