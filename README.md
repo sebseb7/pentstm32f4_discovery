@@ -1,3 +1,5 @@
+[![endorse](http://api.coderwall.com/sebseb7/endorsecount.png)](http://coderwall.com/sebseb7)
+
 # PentSTM32-f4 
 
 a small template project to use with the stm32f4 discovery board (using the STM32F407VGT6)
