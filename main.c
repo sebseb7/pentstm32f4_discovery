@@ -137,3 +137,11 @@ int main(void)
 	//	Delay(1000);
 	}
 }
+uint16_t EVAL_AUDIO_GetSampleCallBack(void)
+{
+}
+void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size)
+{
+}
+
+
