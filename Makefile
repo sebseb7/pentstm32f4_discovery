@@ -43,6 +43,7 @@ GCFLAGS+=-ISTM32F4xx_StdPeriph_Driver/inc/core_support
 LDFLAGS = -mcpu=cortex-m4 -mthumb $(OPTIMIZATION) -nostartfiles  -T$(LSCRIPT) 
 LDFLAGS+= -LSTM32F4xx_StdPeriph_Driver/build -lSTM32F4xx_StdPeriph_Driver
 LDFLAGS+= -LSTM32_DSP_Lib/build -lSTM32_DSP_Lib  
+LDFLAGS+= -LlibPDMFilter_GCC
 
 #  Compiler/Assembler Paths
 GCC = arm-none-eabi-gcc

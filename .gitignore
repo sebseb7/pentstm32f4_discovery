@@ -4,4 +4,4 @@
 *.elf
 *.lst
 tools/flash/st-flash
-
+!libPDMFilter_GCC.a
